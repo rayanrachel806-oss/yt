@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Channels – New videos</title>
+<style>
+:root{--side:#16263a;--sideink:#dfe7f1;--sidemute:#8fa1b8;--bg:#eef1f5;--surf:#fff;--ink:#17202b;--mute:#5f6b7a;--line:#d8dee7;--acc:#e9a62c;--accink:#2a1d00;--err:#b3261e;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--side:#0d1622;--bg:#121a24;--surf:#1b2532;--ink:#eaf0f7;--mute:#9aa8b9;--line:#2b3a4c;--err:#ff8a80;color-scheme:dark}}
+:root[data-theme="dark"]{--side:#0d1622;--bg:#121a24;--surf:#1b2532;--ink:#eaf0f7;--mute:#9aa8b9;--line:#2b3a4c;--err:#ff8a80;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",system-ui,sans-serif;line-height:1.5}
+button,input{font:inherit;color:inherit}button{cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+[hidden]{display:none!important}
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+aside{background:var(--side);color:var(--sideink);padding:22px 14px;display:flex;flex-direction:column;gap:18px;position:sticky;top:0;height:100vh}
+.brand{font-family:Georgia,"Times New Roman",serif;font-size:1.3rem;padding:0 10px}
+nav{display:flex;flex-direction:column;gap:2px}
+nav button{display:flex;justify-content:space-between;align-items:center;background:none;border:0;border-left:3px solid transparent;text-align:left;padding:9px 10px;color:var(--sideink);border-radius:0 6px 6px 0}
+nav button:hover{background:rgba(255,255,255,.06)}
+nav button[aria-current="page"]{border-left-color:var(--acc);background:rgba(255,255,255,.09);font-weight:600}
+.badge{background:var(--acc);color:var(--accink);font-size:.75rem;font-weight:700;border-radius:99px;padding:0 8px;min-width:22px;text-align:center}
+.sidebtns{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+.sidebtns button{background:rgba(255,255,255,.08);border:0;border-radius:6px;padding:8px 12px;color:var(--sideink);text-align:left}
+main{padding:28px 32px 56px;min-width:0}
+.page{display:none}.page.on{display:block}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;margin:0 0 4px}
+h2{font-size:1.1rem;margin:26px 0 12px}
+.sub{color:var(--mute);margin:0 0 20px}
+.stats{display:flex;gap:16px;flex-wrap:wrap}
+.stat{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:14px 22px;text-align:left;min-width:170px}
+.stat:hover{border-color:var(--acc)}
+.stat b{display:block;font-size:2.2rem;line-height:1.1;font-family:Georgia,serif}
+.stat span{color:var(--mute);font-size:.9rem}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:18px}
+.card h2{margin:0 0 8px}
+.card ol{margin:8px 0 12px;padding-left:20px;color:var(--mute)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+input{flex:1;min-width:220px;border:1px solid var(--line);background:var(--bg);border-radius:6px;padding:9px 12px}
+.btn{background:var(--ink);color:var(--bg);border:0;border-radius:6px;padding:8px 16px;font-weight:600}
+.ghost{background:var(--surf);border:1px solid var(--line);border-radius:6px;padding:7px 14px}
+.bar{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.seg{display:flex}.seg button{border:1px solid var(--line);background:var(--surf);padding:6px 14px;margin-left:-1px}
+.seg button:first-child{border-radius:6px 0 0 6px;margin-left:0}.seg button:last-child{border-radius:0 6px 6px 0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--surf);border:1px solid var(--line);border-radius:99px;padding:5px 14px}
+.chip[aria-pressed="true"]{background:var(--acc);color:var(--accink);border-color:var(--acc);font-weight:600}
+#status{color:var(--mute);margin:8px 0 14px}#status.err{color:var(--err)}
+.pw{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:18px;max-width:860px}
+.pwh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.pwh a{color:inherit;font-size:.9rem;margin-left:auto}
+.pw iframe{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:8px;background:#000}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px 16px}
+.v{background:none;border:0;padding:0;text-align:left;min-width:0}
+.v img,.v .ph{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;display:block;background:var(--line)}
+.v b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:8px;font-size:.95rem;line-height:1.3;font-weight:600}
+.v small{color:var(--mute);display:block}
+.empty{color:var(--mute);padding:24px 0;grid-column:1/-1}
+@media (max-width:1180px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  aside{position:static;height:auto}
+  nav{flex-direction:row}.sidebtns{flex-direction:row;margin-top:0}
+  main{padding:20px 16px 40px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:520px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <div class="brand">My Channels</div>
+  <nav aria-label="Sections">
+    <button data-p="home" aria-current="page">Home</button>
+    <button data-p="new">New videos <span class="badge" id="nb">0</span></button>
+  </nav>
+  <div class="sidebtns">
+    <button id="ref">Refresh videos</button>
+    <button id="chg">Change API key</button>
+  </div>
+</aside>
+
+<main>
+<section id="home" class="page on">
+  <h1>Home</h1>
+  <p class="sub">Click a box to see those videos.</p>
+  <div class="stats">
+    <button class="stat" id="st-today"><b id="n-today">–</b><span>New today</span></button>
+    <button class="stat" id="st-week"><b id="n-week">–</b><span>New this week (last 7 days)</span></button>
+  </div>
+
+  <section class="card" id="setup" style="margin-top:22px" hidden>
+    <h2>Add your YouTube API key</h2>
+    <ol>
+      <li>Get a key from console.cloud.google.com (enable “YouTube Data API v3”, then create an API key).</li>
+      <li>Either paste it below, or put it in the file where it says API_KEY near the top of the script.</li>
+    </ol>
+    <div class="row"><input id="key" type="password" placeholder="Paste API key" aria-label="API key" autocomplete="off"><button class="btn" id="sk">Save key</button></div>
+  </section>
+
+  <p id="status" role="status"></p>
+  <h2>Latest uploads</h2>
+  <div class="grid" id="latest"></div>
+</section>
+
+<section id="new" class="page">
+  <h1>New videos</h1>
+  <div class="bar">
+    <div class="seg" id="range" role="group" aria-label="Time range"></div>
+    <div class="chips" id="cats" role="group" aria-label="Category"></div>
+  </div>
+  <p id="status2" role="status" class="sub" style="margin:8px 0 14px"></p>
+  <div class="pw" id="pw" hidden>
+    <div class="pwh"><b id="pt"></b><a id="po" href="#" target="_blank" rel="noopener">Open on YouTube</a><button class="ghost" id="pc">Close</button></div>
+    <iframe id="pf" title="Video player" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+</main>
+</div>
+
+<script>
+// =====================================================================
+//  PUT YOUR YOUTUBE API KEY BETWEEN THE QUOTES ON THE NEXT LINE
+//  Example:  var API_KEY = "AIzaSy...";
+// =====================================================================
+var API_KEY = "";
+
+// name, handle, channel ID (null = looked up by handle), categories
+var CH=[
+["History Buffs","HistoryBuffs","UCggHoXaj8BQHIiPmOxezeWA","War"],
+["The Tank Museum","thetankmuseum",null,"War"],
+["Task & Purpose","Taskandpurpose","UCSq3p5NKEtyp5Rjd4ctiEbg","War"],
+["Simple History","Simplehistory","UC510QYlOlKNyhy_zdQxnGYw","War"],
+["h0ser","h0ser","UCAiEWppTvoNSHU939xhMb2g","War"],
+["Imperial War Museums","ImperialWarMuseums","UC3uAjWoLZ4bSi6qI9SjALxA","War"],
+["Yarnhub","Yarnhub","UC-f2WBfSCZiu0bOBydjot3w","War"],
+["Call Me Ezekiel","CallMeEzekiel","UCnZ1r94_Ptz_1gN5VBnE0Mg","War"],
+["Johnny Johnson Esq","JohnnyJohnsonEsq","UCg7Q08KKOdjSrSnXcUL00Jw","War"],
+["History Matters","HistoryMatters","UC22BdTgxefuvUivrjesETjg","War,History"],
+["The Armchair Historian","TheArmchairHistorian","UCeUJFQ0D9qs6aVNyUt9fkeQ","War,History"],
+["History Dose","HistoryDose","UCLCckD5PjOk2M3iS_nPcjNQ","War,History"],
+["Battle Order","BattleOrder","UCn6_Kza6erL9GCAhOpQLfBg","War"],
+["Extra History","extrahistory","UCCODtTcd5M1JavPCOr_Uydg","War,History"],
+["Real Engineering","RealEngineering","UCR1IuLEqb6UEA_zQ81kwXfg","Engineering"],
+["Found and Explained","FoundAndExplained","UCpM4zrZ9c_apiEj6CApj2yw","Engineering"],
+["SandRhoman History","SandRhomanHistory","UC7pr_dQxm2Ns2KlzRSx5FZA","Engineering,History"],
+["Galactic War Data Archive","GalacticWarDataArchive","UCk_0b8kokaWWte9stv3fRig","Fantasy"],
+["Curious Archive","CuriousArchive","UCweDKPSF65wRw5VHFUJYiow","Fantasy"],
+["Fistful of Studs","fistfulofstuds","UCrwLzfyoLPtv0EzRbsFevOg","Lego"],
+["Brick Science","Brick_Science","UCpQB577lHFyWTyvrS73Ldlg","Lego"],
+["Smart Lego SG","SmartLegoSG","UCjxcKbrKkWoDGVf7-ZBCKcg","Lego"],
+["Brick Experiment Channel","BrickExperimentChannel","UClsFdM0HzTdF1JYoraQ0aUw","Lego"],
+["Dr Engine","DrEngine","UC-rfs5xdEsCOVCC5D3YZ4lw","Lego"],
+["Brick Technology","BrickTechnology","UCUuvZ0skL2WYZ3rhPMZbfdA","Lego"],
+["Bricks N Gears","bricksngears","UCOKiJjq6dc_LyEfnd6FrPJQ","Lego"],
+["Racing Brick","RacingBrick",null,"Lego"],
+["Edison Science Corner","EDISON_SCIENCE_CORNER","UCVcOsUBmH4hzVSnmJA_i5SA","Science"],
+["vt.physics","vt.physics","UCuO1xKv8PwUCdQ1b3eY1TrA","Science"]
+].map(function(a){return{n:a[0],h:a[1],id:a[2],c:a[3].split(","),pl:null}});
+CH.push({n:"War playlist",h:null,id:null,c:["War"],pl:"PLSntCogb-PMoD-E0meiSDvi3jlRJau5nT"});
+
+var CATS=["All","War","Engineering","History","Fantasy","Lego","Science"];
+var RANGES=[["today","Today"],["24h","Last 24 hours"],["7d","Last 7 days"]];
+var st={range:"today",cat:"All"},items=[];
+var $=function(i){return document.getElementById(i)};
+function ld(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function sv(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+var KEY=API_KEY||ld("ytkey")||"";
+
+async function api(path){
+  var r=await fetch("https://www.googleapis.com/youtube/v3/"+path+"&key="+encodeURIComponent(KEY));
+  var j=await r.json();
+  if(!r.ok||j.error)throw new Error((j.error&&j.error.message)||("HTTP "+r.status));
+  return j;
+}
+async function playlistFor(c){
+  if(c.pl)return c.pl;
+  var id=c.id;
+  if(!id){
+    var m={};try{m=JSON.parse(ld("nv_ids")||"{}")}catch(e){}
+    id=m[c.h];
+    if(!id){
+      var j=await api("channels?part=id&forHandle="+encodeURIComponent(c.h));
+      id=j.items&&j.items[0]&&j.items[0].id;
+      if(!id)throw new Error("Channel not found: "+c.n);
+      m[c.h]=id;sv("nv_ids",JSON.stringify(m));
+    }
+  }
+  return "UU"+id.slice(2);
+}
+async function one(c){
+  var pl=await playlistFor(c);
+  var j=await api("playlistItems?part=snippet,contentDetails&maxResults=10&playlistId="+encodeURIComponent(pl));
+  return (j.items||[]).map(function(it){
+    var s=it.snippet||{},d=it.contentDetails||{},t=s.thumbnails||{},th=t.medium||t.high||t.default;
+    return{v:d.videoId,t:s.title||"",ch:c.n,cats:c.c.slice(),when:new Date(d.videoPublishedAt||s.publishedAt).getTime(),th:th?th.url:""};
+  }).filter(function(x){return x.v&&x.t!=="Private video"&&x.t!=="Deleted video"});
+}
+async function load(force){
+  if(!KEY){$("setup").hidden=false;setStatus("Add your API key to see new videos.");return}
+  $("setup").hidden=true;
+  var cache=null;try{cache=JSON.parse(ld("nv_cache")||"null")}catch(e){}
+  if(!force&&cache&&Date.now()-cache.t<30*60000&&cache.k===KEY.slice(-6)){items=cache.items;render();return}
+  setStatus("Loading from "+CH.length+" sources…");
+  var res=await Promise.allSettled(CH.map(one));
+  var all=[],errs=[];
+  res.forEach(function(r){if(r.status==="fulfilled")all=all.concat(r.value);else errs.push(r.reason&&r.reason.message||"error")});
+  if(!all.length&&errs.length){setStatus("Could not load videos: "+errs[0],true);return}
+  var by={};
+  all.forEach(function(x){if(by[x.v]){x.cats.forEach(function(c){if(by[x.v].cats.indexOf(c)<0)by[x.v].cats.push(c)})}else by[x.v]=x});
+  items=Object.keys(by).map(function(k){return by[k]}).sort(function(a,b){return b.when-a.when});
+  sv("nv_cache",JSON.stringify({t:Date.now(),k:KEY.slice(-6),items:items}));
+  render(errs.length?errs.length+" source(s) failed to load.":"");
+}
+function setStatus(t,err){var s=$("status");s.textContent=t;s.className=err?"err":"";}
+function ago(ms){
+  var m=Math.round((Date.now()-ms)/60000);
+  if(m<1)return "just now";if(m<60)return m+" min ago";
+  var h=Math.round(m/60);if(h<24)return h+" hr ago";
+  var d=Math.round(h/24);return d+(d===1?" day ago":" days ago");
+}
+function startOfToday(){var n=new Date();n.setHours(0,0,0,0);return n.getTime()}
+function cutoff(r){return r==="today"?startOfToday():Date.now()-(r==="24h"?864e5:7*864e5)}
+function fill(el,list,emptyMsg){
+  el.innerHTML="";
+  if(!list.length){var e=document.createElement("p");e.className="empty";e.textContent=emptyMsg;el.appendChild(e);return}
+  list.forEach(function(x){
+    var b=document.createElement("button");b.className="v";
+    var im;
+    if(x.th&&x.th.indexOf("https://")===0){im=document.createElement("img");im.src=x.th;im.alt="";im.loading="lazy"}
+    else{im=document.createElement("div");im.className="ph"}
+    var t=document.createElement("b");t.textContent=x.t;
+    var c=document.createElement("small");c.textContent=x.ch;
+    var m=document.createElement("small");m.textContent=ago(x.when);
+    b.append(im,t,c,m);
+    b.onclick=function(){go("new");play(x)};
+    el.appendChild(b);
+  });
+}
+function render(note){
+  var today=items.filter(function(x){return x.when>=startOfToday()}).length;
+  var week=items.filter(function(x){return x.when>=cutoff("7d")}).length;
+  $("n-today").textContent=today;$("n-week").textContent=week;$("nb").textContent=today;
+  setStatus(note||"");
+  fill($("latest"),items.slice(0,8),"No videos loaded yet.");
+  var c=cutoff(st.range);
+  var list=items.filter(function(x){return x.when>=c&&(st.cat==="All"||x.cats.indexOf(st.cat)>-1)});
+  $("status2").textContent=list.length+" video"+(list.length===1?"":"s")+" in this view";
+  fill($("grid"),list,"Nothing new in this range. Try a longer range.");
+}
+function play(x){
+  $("pt").textContent=x.t;
+  $("po").href="https://www.youtube.com/watch?v="+encodeURIComponent(x.v);
+  $("pf").src="https://www.youtube.com/embed/"+encodeURIComponent(x.v)+"?autoplay=1";
+  $("pw").hidden=false;$("pw").scrollIntoView({behavior:"smooth",block:"start"});
+}
+$("pc").onclick=function(){$("pw").hidden=true;$("pf").src="about:blank"};
+function go(p){
+  document.querySelectorAll(".page").forEach(function(s){s.classList.toggle("on",s.id===p)});
+  document.querySelectorAll("nav button").forEach(function(b){
+    if(b.dataset.p===p)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");
+  });
+  window.scrollTo(0,0);
+}
+document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){go(b.dataset.p)}});
+function ui(){
+  var r=$("range");r.innerHTML="";
+  RANGES.forEach(function(o){var b=document.createElement("button");b.textContent=o[1];b.setAttribute("aria-pressed",st.range===o[0]);b.onclick=function(){st.range=o[0];ui();render()};r.appendChild(b)});
+  var c=$("cats");c.innerHTML="";
+  CATS.forEach(function(k){var b=document.createElement("button");b.className="chip";b.textContent=k;b.setAttribute("aria-pressed",st.cat===k);b.onclick=function(){st.cat=k;ui();render()};c.appendChild(b)});
+}
+$("st-today").onclick=function(){st.range="today";st.cat="All";ui();render();go("new")};
+$("st-week").onclick=function(){st.range="7d";st.cat="All";ui();render();go("new")};
+$("sk").onclick=function(){var v=$("key").value.trim();if(!v)return;KEY=v;sv("ytkey",v);$("key").value="";load(true)};
+$("chg").onclick=function(){go("home");$("setup").hidden=false;$("key").focus()};
+$("ref").onclick=function(){load(true)};
+ui();load(false);
+</script>
+</body>
+</html>
